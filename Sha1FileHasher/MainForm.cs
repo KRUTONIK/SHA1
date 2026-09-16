@@ -41,10 +41,10 @@ public partial class MainForm : Form
             {
                 MessageBox.Show(
                     this,
-                    "Хэш вычислен. Для демонстрации лабораторной работы рекомендуется использовать файл размером не менее 1 КБ.",
+                    "Для демонстрации рекомендуется использовать файл размером не менее 1 КБ.",
                     "Информация",
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                    MessageBoxIcon.Warning);
             }
         }
         catch (Exception ex)
@@ -96,7 +96,7 @@ public partial class MainForm : Form
     private void variantMenuItem_Click(object? sender, EventArgs e) =>
         MessageBox.Show(
             this,
-            "Номер варианта: 11\nПункт задания: 3\nХэш-функция: SHA-1",
+            "Номер варианта: 11(3)\nХэш-функция: SHA-1",
             "Вариант",
             MessageBoxButtons.OK,
             MessageBoxIcon.Information);
@@ -112,7 +112,7 @@ public partial class MainForm : Form
     private void aboutMenuItem_Click(object? sender, EventArgs e) =>
         MessageBox.Show(
             this,
-            "Программа вычисляет SHA-1 для файла любого формата и позволяет сохранить полученное значение в текстовый файл.\n\nSHA-1 используется здесь в учебных целях: алгоритм считается криптографически устаревшим из-за известных коллизий.",
+            "Программа вычисляет SHA-1 для файла любого формата и позволяет сохранить полученное значение в текстовый файл.\n\nSHA-1 считается криптографически устаревшим из-за известных коллизий.",
             "О программе",
             MessageBoxButtons.OK,
             MessageBoxIcon.Information);
