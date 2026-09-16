@@ -32,24 +32,50 @@ public partial class MainForm : Form
     {
         try
         {
-            currentResult = FileHashService.Calculate(filePathTextBox.Text);
+            string filePath = filePathTextBox.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(filePath))
+                throw new InvalidOperationException("Выберите файл.");
+
+            var fileInfo = new FileInfo(filePath);
+
+            if (!fileInfo.Exists)
+                throw new FileNotFoundException("Выбранный файл не найден.");
+
+            if (fileInfo.Length < 1024)
+            {
+                hashTextBox.Clear();
+                sizeValueLabel.Text = fileInfo.Length + " байт";
+                saveButton.Enabled = false;
+
+                MessageBox.Show(
+                    this,
+                    "Размер файла должен быть не менее 1 КБ.",
+                    "Ошибка",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return;
+            }
+
+            currentResult = FileHashService.Calculate(filePath);
+
             hashTextBox.Text = currentResult.Hash;
             sizeValueLabel.Text = currentResult.FileSize + " байт";
             saveButton.Enabled = true;
-
-            if (currentResult.FileSize < 1024)
-            {
-                MessageBox.Show(
-                    this,
-                    "Для демонстрации рекомендуется использовать файл размером не менее 1 КБ.",
-                    "Информация",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-            }
         }
         catch (Exception ex)
         {
-            MessageBox.Show(this, ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            hashTextBox.Clear();
+            sizeValueLabel.Text = "—";
+            saveButton.Enabled = false;
+
+            MessageBox.Show(
+                this,
+                ex.Message,
+                "Ошибка",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
         }
     }
 
@@ -88,7 +114,7 @@ public partial class MainForm : Form
     private void studentInfoMenuItem_Click(object? sender, EventArgs e) =>
         MessageBox.Show(
             this,
-            "Покладов Н.Н.\nГруппа ПИбд-42\nДисциплина: «Информационная безопасность»",
+            "Покладов Н.Н.\nГруппа ПИбд-42\nДисциплина: \"Информационная безопасность\"",
             "Данные студента",
             MessageBoxButtons.OK,
             MessageBoxIcon.Information);
@@ -104,7 +130,7 @@ public partial class MainForm : Form
     private void algorithmMenuItem_Click(object? sender, EventArgs e) =>
         MessageBox.Show(
             this,
-            "SHA-1 формирует 160-битный хэш. Сообщение дополняется до длины, кратной 512 битам, делится на 512-битные блоки, а каждый блок обрабатывается 80 раундами над пятью 32-битными словами состояния. В программе алгоритм реализован самостоятельно.",
+            "SHA-1 формирует 160-битный хэш. Сообщение дополняется до длины, кратной 512 битам, делится на 512-битные блоки, а каждый блок обрабатывается 80 раундами над пятью 32-битными словами состояния.",
             "Алгоритм SHA-1",
             MessageBoxButtons.OK,
             MessageBoxIcon.Information);
